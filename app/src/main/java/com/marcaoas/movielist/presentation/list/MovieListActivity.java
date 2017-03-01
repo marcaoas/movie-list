@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.marcaoas.movielist.R;
 import com.marcaoas.movielist.domain.models.Movie;
+import com.marcaoas.movielist.presentation.Navigator;
 import com.marcaoas.movielist.presentation.base.BaseActivity;
 import com.marcaoas.movielist.presentation.list.di.MovieListModule;
 import com.marcaoas.movielist.presentation.utils.Logger;
@@ -27,6 +28,8 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
 
     @Inject
     MoviesAdapter moviesAdapter;
+    @Inject
+    Navigator navigator;
 
     @Inject
     MovieListContract.Presenter presenter;
@@ -63,6 +66,9 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
 
     private void setupRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.movies_recyclerView);
+        moviesAdapter.getItemClick().subscribe( movie -> {
+            navigator.navigateToMovieDetailsActivity(movie.getId());
+        });
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(moviesAdapter);

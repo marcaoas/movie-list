@@ -15,6 +15,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+
 /**
  * Created by marco on 28/02/17.
  */
@@ -22,6 +25,7 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
     private ArrayList<Movie> movieList;
+    private final PublishSubject<Movie> onMovieClickSubject = PublishSubject.create();
 
     public MoviesAdapter() {
         movieList = new ArrayList<>();
@@ -46,6 +50,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                 .placeholder(R.drawable.ic_video_icon)
                 .error(R.drawable.ic_video_icon)
                 .into(holder.poster);
+        holder.container.setOnClickListener(view -> { onMovieClickSubject.onNext(movie); });
     }
 
     @Override
@@ -60,6 +65,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public void addMovies(List<Movie> movies) {
         movieList.addAll(movies);
         notifyDataSetChanged();
+    }
+
+    public Observable<Movie> getItemClick() {
+        return onMovieClickSubject;
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {

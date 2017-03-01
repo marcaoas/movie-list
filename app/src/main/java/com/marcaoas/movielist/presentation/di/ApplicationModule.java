@@ -8,6 +8,7 @@ import com.marcaoas.movielist.data.repositories.TMDBMovieRepository;
 import com.marcaoas.movielist.data.store.TMDBApiClient;
 import com.marcaoas.movielist.domain.repositories.MoviesRepository;
 import com.marcaoas.movielist.presentation.MovieListApplication;
+import com.marcaoas.movielist.presentation.Navigator;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -32,6 +33,12 @@ public class ApplicationModule {
     @Singleton
     Context providesApplicationContext() {
         return application;
+    }
+
+    @Provides
+    @Singleton
+    Navigator providesNavigator(Context context) {
+        return new Navigator(context);
     }
 
     @Provides
