@@ -10,6 +10,7 @@ import com.marcaoas.movielist.domain.models.Movie;
 import com.marcaoas.movielist.presentation.base.BaseActivity;
 import com.marcaoas.movielist.presentation.list.di.MovieListModule;
 import com.marcaoas.movielist.presentation.utils.Logger;
+import com.marcaoas.movielist.presentation.utils.SimpleListDivider;
 
 import java.util.List;
 
@@ -65,6 +66,7 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(moviesAdapter);
+        mRecyclerView.addItemDecoration(new SimpleListDivider(this));
     }
 
 
