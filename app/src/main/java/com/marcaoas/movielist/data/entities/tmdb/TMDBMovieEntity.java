@@ -10,8 +10,9 @@ import java.util.Date;
 
 public class TMDBMovieEntity {
     private String id;
-    @SerializedName("posterPath")
+    @SerializedName("poster_path")
     private String posterPath;
+    private String status;
     private boolean adult;
     private String overview;
     @SerializedName("release_date")
@@ -36,6 +37,14 @@ public class TMDBMovieEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getPosterPath() {

@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.marcaoas.movielist.BuildConfig;
 import com.marcaoas.movielist.data.entities.tmdb.TMDBMovieListEntity;
 import com.marcaoas.movielist.data.mappers.Mapper;
+import com.marcaoas.movielist.data.mappers.utils.RequestException;
 
 import io.reactivex.Single;
 import io.reactivex.SingleTransformer;
@@ -24,22 +25,30 @@ public class TMDBApiClient {
     public static final String API_ENDPOINT = "http://api.themoviedb.org/3/";
     public static final String API_KEY = "9a2867abc5ffe4b5bc020fab46ca4f6a";
     public static final String API_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String IMAGE_ENDPOINT = "https://image.tmdb.org/t/p/original";
     private static TMDBApiServices apiServices;
+    private final String apiKey;
+    private final String apiEnpoint;
 
-    private static TMDBApiServices getApiServices() {
+    public TMDBApiClient(String apiKey, String apiEndpoint) {
+        this.apiKey = apiKey;
+        this.apiEnpoint = apiEndpoint;
+    }
+
+    private static TMDBApiServices getApiServices(String apiEndpoint) {
         if (apiServices == null) {
-            buildApiServices();
+            buildApiServices(apiEndpoint);
         }
         return apiServices;
     }
 
-    private static void buildApiServices() {
+    private static void buildApiServices(String apiEndpoint) {
         final OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
         okHttpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE));
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(okHttpClientBuilder.build())
-                .baseUrl(getApiEndpoint())
+                .baseUrl(apiEndpoint)
                 .addConverterFactory(getJsonSerializer())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
@@ -47,12 +56,8 @@ public class TMDBApiClient {
         apiServices = retrofit.create(TMDBApiServices.class);
     }
 
-    public static String getApiEndpoint() {
-        return API_ENDPOINT;
-    }
-
-    public static String getApiKey() {
-        return API_KEY;
+    public String getApiKey() {
+        return apiKey;
     }
 
     public static Converter.Factory getJsonSerializer() {
@@ -74,7 +79,8 @@ public class TMDBApiClient {
         });
     }
 
-    public Single<TMDBMovieListEntity> getMovieList() {
-        return getApiServices().getMovieList(getApiKey());
+    public Single<TMDBMovieListEntity> getMovieList(int page) {
+        return getApiServices(apiEnpoint).getMovieList(getApiKey(), page)
+                .compose(verifyResponse());
     }
 }

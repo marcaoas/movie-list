@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 
 public interface TMDBApiServices {
 
-    @GET("/discover/movie")
-    Single<Response<TMDBMovieListEntity>> getMovieList(@Query("api_key") String apiKey);
+    @GET("discover/movie")
+    Single<Response<TMDBMovieListEntity>> getMovieList(@Query("api_key") String apiKey, @Query("page") int page);
 
 }

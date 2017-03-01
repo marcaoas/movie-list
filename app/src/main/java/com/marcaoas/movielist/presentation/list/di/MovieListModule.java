@@ -1,5 +1,7 @@
 package com.marcaoas.movielist.presentation.list.di;
 
+import com.marcaoas.movielist.domain.interactors.ListMoviesInteractor;
+import com.marcaoas.movielist.domain.repositories.MoviesRepository;
 import com.marcaoas.movielist.presentation.di.PerActivity;
 import com.marcaoas.movielist.presentation.list.MovieListContract;
 import com.marcaoas.movielist.presentation.list.MovieListPresenter;
@@ -22,7 +24,13 @@ public class MovieListModule {
 
     @PerActivity
     @Provides
-    MovieListContract.Presenter presenterProvider() {
-        return new MovieListPresenter();
+    ListMoviesInteractor provideInteractor(MoviesRepository moviesRepository) {
+        return new ListMoviesInteractor(moviesRepository);
+    }
+
+    @PerActivity
+    @Provides
+    MovieListContract.Presenter presenterProvider(ListMoviesInteractor interactor) {
+        return new MovieListPresenter(interactor);
     }
 }

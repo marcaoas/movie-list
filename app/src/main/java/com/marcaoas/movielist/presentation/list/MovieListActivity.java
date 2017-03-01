@@ -6,9 +6,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.marcaoas.movielist.R;
+import com.marcaoas.movielist.domain.models.Movie;
 import com.marcaoas.movielist.presentation.base.BaseActivity;
 import com.marcaoas.movielist.presentation.list.di.MovieListModule;
 import com.marcaoas.movielist.presentation.utils.Logger;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -41,6 +44,12 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
     protected void onDestroy() {
         unbindPresenter();
         super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.startingScreen();
     }
 
     public void bindPresenter() {
@@ -87,7 +96,7 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
     }
 
     @Override
-    public void addMovies() {
+    public void addMovies(List<Movie> movies) {
         Logger.d("add movies to list");
     }
 }

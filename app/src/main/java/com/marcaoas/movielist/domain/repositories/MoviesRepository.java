@@ -9,9 +9,9 @@ import io.reactivex.Single;
  * Created by marco on 28/02/17.
  */
 
-public interface MovieRepository {
+public interface MoviesRepository {
 
-    Single<MovieList> getMovieList();
+    Single<MovieList> getMovieList(int page);
     Single<Movie> getMovieDetails(String movieId);
 
 

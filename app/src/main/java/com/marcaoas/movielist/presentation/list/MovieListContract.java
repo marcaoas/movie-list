@@ -1,5 +1,9 @@
 package com.marcaoas.movielist.presentation.list;
 
+import com.marcaoas.movielist.domain.models.Movie;
+
+import java.util.List;
+
 /**
  * Created by marco on 28/02/17.
  */
@@ -10,6 +14,7 @@ public interface MovieListContract {
 
         void bindView(View view);
         void unbindView();
+        void startingScreen();
 
     }
 
@@ -20,7 +25,7 @@ public interface MovieListContract {
         void showInternetError();
         void showDefaultError();
         void showList();
-        void addMovies();
+        void addMovies(List<Movie> movies);
 
     }
 

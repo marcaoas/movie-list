@@ -2,6 +2,8 @@ package com.marcaoas.movielist.data.entities.tmdb;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by marco on 28/02/17.
  */
@@ -9,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 public class TMDBMovieListEntity {
 
     @SerializedName("page")
-    private int currentPages;
+    private int currentPage;
     @SerializedName("total_pages")
     private int totalPage;
     @SerializedName("total_results")
@@ -17,12 +19,12 @@ public class TMDBMovieListEntity {
     @SerializedName("results")
     private List<TMDBMovieEntity> movies;
 
-    public int getCurrentPages() {
-        return currentPages;
+    public int getCurrentPage() {
+        return currentPage;
     }
 
-    public void setCurrentPages(int currentPages) {
-        this.currentPages = currentPages;
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 
     public int getTotalPage() {
