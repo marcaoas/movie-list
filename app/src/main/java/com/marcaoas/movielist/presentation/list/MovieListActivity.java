@@ -62,10 +62,8 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
 
     private void setupRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.movies_recyclerView);
-
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
         mRecyclerView.setAdapter(moviesAdapter);
     }
 
