@@ -97,6 +97,6 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
 
     @Override
     public void addMovies(List<Movie> movies) {
-        Logger.d("add movies to list");
+        moviesAdapter.addMovies(movies);
     }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/movie_item_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/list_item_padding">
+
+    <ImageView
+        android:id="@+id/poster_imageView"
+        android:layout_width="@dimen/list_image_width"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_video_icon" />
+
+    <TextView
+        android:id="@+id/title_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/poster_imageView"
+        android:layout_toEndOf="@+id/poster_imageView"
+        android:layout_alignParentTop="true"
+        android:text="GREATE MOVIE"/>
+
+    <TextView
+        android:id="@+id/popularity_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/poster_imageView"
+        android:layout_toEndOf="@+id/poster_imageView"
+        android:layout_below="@+id/title_textView"
+        android:text="10/10"/>
+
+</RelativeLayout>

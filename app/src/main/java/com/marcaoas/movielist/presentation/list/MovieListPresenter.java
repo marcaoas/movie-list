@@ -39,10 +39,12 @@ public class MovieListPresenter implements MovieListContract.Presenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movieList -> {
+                    view.hideLoading();
                     view.showList();
                     view.addMovies(movieList.getMovies());
                 }, throwable -> {
                     Logger.d("ERROR");
+                    view.hideLoading();
                     throwable.printStackTrace();
                 });
     }
