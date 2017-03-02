@@ -1,4 +1,4 @@
-package com.marcaoas.movielist.presentation.list;
+package com.marcaoas.movielist.presentation.discover;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +9,7 @@ import com.marcaoas.movielist.R;
 import com.marcaoas.movielist.domain.models.Movie;
 import com.marcaoas.movielist.presentation.Navigator;
 import com.marcaoas.movielist.presentation.base.BaseActivity;
-import com.marcaoas.movielist.presentation.list.di.MovieListModule;
+import com.marcaoas.movielist.presentation.discover.di.MovieListModule;
 import com.marcaoas.movielist.presentation.utils.Logger;
 import com.marcaoas.movielist.presentation.utils.SimpleListDivider;
 

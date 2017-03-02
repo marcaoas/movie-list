@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme"
         android:name=".presentation.MovieListApplication">
 
-        <activity android:name=".presentation.list.MovieListActivity">
+        <activity android:name=".presentation.discover.MovieListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

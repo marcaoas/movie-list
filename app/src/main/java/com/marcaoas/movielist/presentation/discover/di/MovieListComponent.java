@@ -1,7 +1,7 @@
-package com.marcaoas.movielist.presentation.list.di;
+package com.marcaoas.movielist.presentation.discover.di;
 
 import com.marcaoas.movielist.presentation.di.PerActivity;
-import com.marcaoas.movielist.presentation.list.MovieListActivity;
+import com.marcaoas.movielist.presentation.discover.MovieListActivity;
 
 import dagger.Subcomponent;
 

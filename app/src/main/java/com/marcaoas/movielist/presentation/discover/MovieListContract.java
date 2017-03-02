@@ -1,4 +1,4 @@
-package com.marcaoas.movielist.presentation.list;
+package com.marcaoas.movielist.presentation.discover;
 
 import com.marcaoas.movielist.domain.models.Movie;
 

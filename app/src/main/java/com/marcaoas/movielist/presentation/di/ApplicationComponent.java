@@ -1,8 +1,8 @@
 package com.marcaoas.movielist.presentation.di;
 
 import com.marcaoas.movielist.presentation.MovieListApplication;
-import com.marcaoas.movielist.presentation.list.di.MovieListComponent;
-import com.marcaoas.movielist.presentation.list.di.MovieListModule;
+import com.marcaoas.movielist.presentation.discover.di.MovieListComponent;
+import com.marcaoas.movielist.presentation.discover.di.MovieListModule;
 
 import javax.inject.Singleton;
 

@@ -1,11 +1,11 @@
-package com.marcaoas.movielist.presentation.list.di;
+package com.marcaoas.movielist.presentation.discover.di;
 
 import com.marcaoas.movielist.domain.interactors.ListMoviesInteractor;
 import com.marcaoas.movielist.domain.repositories.MoviesRepository;
 import com.marcaoas.movielist.presentation.di.PerActivity;
-import com.marcaoas.movielist.presentation.list.MovieListContract;
-import com.marcaoas.movielist.presentation.list.MovieListPresenter;
-import com.marcaoas.movielist.presentation.list.MoviesAdapter;
+import com.marcaoas.movielist.presentation.discover.MovieListContract;
+import com.marcaoas.movielist.presentation.discover.MovieListPresenter;
+import com.marcaoas.movielist.presentation.discover.MoviesAdapter;
 
 import dagger.Module;
 import dagger.Provides;
