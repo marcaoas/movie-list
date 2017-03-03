@@ -44,4 +44,8 @@ public class MovieList {
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
     }
+
+    public boolean hasEndedPagination() {
+        return currentPage >= 1 && currentPage == totalPages;
+    }
 }

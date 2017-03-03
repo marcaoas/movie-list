@@ -2,11 +2,17 @@ package com.marcaoas.movielist.presentation.details;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.marcaoas.movielist.BuildConfig;
 import com.marcaoas.movielist.R;
 import com.marcaoas.movielist.presentation.Navigator;
 import com.marcaoas.movielist.presentation.base.BaseActivity;
@@ -38,10 +44,12 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
     ImageView backdropImageView;
     @BindView(R.id.poster_imageView)
     ImageView posterImageView;
-    @BindView(R.id.movie_title_textView)
-    TextView movieTitleTextView;
     @BindView(R.id.movie_overview_textView)
     TextView movieOverviewTextView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +58,20 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
         handleIntent(savedInstanceState);
         getAppComponent().plus(new MovieDetailsModule(movieId)).inject(this);
         ButterKnife.bind(this);
+        setupToolbar();
         presenter.bindView(this);
+        presenter.startScreen();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void handleIntent(Bundle extras) {
@@ -67,10 +88,12 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
         presenter.unbindView();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        presenter.startScreen();
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
     @Override
@@ -114,7 +137,7 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
 
     @Override
     public void setMovieTitle(String title) {
-        movieTitleTextView.setText(title);
+        collapsingToolbarLayout.setTitle(title);
     }
 
     @Override
@@ -129,10 +152,11 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
 
     @Override
     public void setPostImageUrl(String posterUrl) {
-        int imageSize = (int) getResources().getDimension(R.dimen.list_image_width);
+        int imageWidth = (int) getResources().getDimension(R.dimen.details_image_width);
+        int imageHeight = (int) getResources().getDimension(R.dimen.details_image_height);
         Picasso.with(this)
                 .load(posterUrl)
-                .resize(imageSize, imageSize)
+                .resize(imageWidth, imageHeight)
                 .centerInside()
                 .placeholder(R.drawable.ic_video_icon)
                 .error(R.drawable.ic_video_icon)

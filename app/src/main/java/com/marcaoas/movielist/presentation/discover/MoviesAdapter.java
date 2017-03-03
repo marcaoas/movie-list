@@ -22,43 +22,73 @@ import io.reactivex.subjects.PublishSubject;
  * Created by marco on 28/02/17.
  */
 
-public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
+public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int FOOTER_VIEW_TYPE = 10;
+    private static final int MOVIE_VIEW_TYPE = 20;
     private ArrayList<Movie> movieList;
     private final PublishSubject<Movie> onMovieClickSubject = PublishSubject.create();
+    private View footerView;
 
     public MoviesAdapter() {
         movieList = new ArrayList<>();
     }
 
     @Override
-    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.movie_list_item, parent, false);
-        return new MovieViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if(viewType == MOVIE_VIEW_TYPE){
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.movie_list_item, parent, false);
+            return new MovieViewHolder(view);
+        } else {
+            return null;
+        }
+
     }
 
-    public void onBindViewHolder(MovieViewHolder holder, int position) {
-        Movie movie = getItem(position);
-        holder.title.setText(movie.getTitle());
+    @Override
+    public int getItemViewType(int position) {
+        if(position == getItemCount() - 1 && footerView != null){
+            return FOOTER_VIEW_TYPE;
+        } else {
+            return MOVIE_VIEW_TYPE;
+        }
+    }
 
-        int imageSize = (int) holder.getContext().getResources().getDimension(R.dimen.list_image_width);
-        Picasso.with(holder.getContext())
-                .load(movie.getPosterUrl())
-                .resize(imageSize, imageSize)
-                .centerInside()
-                .placeholder(R.drawable.ic_video_icon)
-                .error(R.drawable.ic_video_icon)
-                .into(holder.poster);
-        holder.container.setOnClickListener(view -> { onMovieClickSubject.onNext(movie); });
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if(getItemViewType(position) == MOVIE_VIEW_TYPE){
+            Movie movie = getItem(position);
+            if(movie != null){
+                MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
+                movieViewHolder.title.setText(movie.getTitle());
+                int imageWidth = (int) movieViewHolder.getContext().getResources().getDimension(R.dimen.list_image_width);
+                int imageHeight = (int) movieViewHolder.getContext().getResources().getDimension(R.dimen.list_image_height);
+                Picasso.with(movieViewHolder.getContext())
+                        .load(movie.getPosterUrl())
+                        .resize(imageWidth, imageHeight)
+                        .centerInside()
+                        .placeholder(R.drawable.ic_video_icon)
+                        .error(R.drawable.ic_video_icon)
+                        .into(movieViewHolder.poster);
+                movieViewHolder.container.setOnClickListener(view -> { onMovieClickSubject.onNext(movie); });
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
-        return movieList.size();
+        if(footerView!=null){
+            return movieList.size() + 1;
+        } else {
+            return movieList.size();
+        }
+
     }
 
     public Movie getItem(int position) {
+        if(position >= movieList.size() || position > 0){
+            return null;
+        }
         return movieList.get(position);
     }
 
@@ -73,6 +103,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     public void clearMovies() {
         movieList.clear();
+        notifyDataSetChanged();
+    }
+
+    public void setFooterView(View view) {
+        footerView = view;
+        notifyDataSetChanged();
+    }
+
+    public void hideFooterView() {
+        footerView = null;
         notifyDataSetChanged();
     }
 

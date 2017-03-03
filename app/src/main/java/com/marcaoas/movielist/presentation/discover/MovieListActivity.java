@@ -49,18 +49,13 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
         getAppComponent().plus(new MovieListModule()).inject(this);
         setupViews();
         bindPresenter();
+        presenter.startingScreen();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbindPresenter();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        presenter.startingScreen();
     }
 
     public void bindPresenter() {
@@ -96,6 +91,7 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
 
     @Override
     public void showLoading() {
+        
         Logger.d("show Loading");
     }
 

@@ -2,8 +2,10 @@ package com.marcaoas.movielist.presentation.discover;
 
 import com.marcaoas.movielist.domain.interactors.ListMoviesInteractor;
 import com.marcaoas.movielist.domain.models.Movie;
+import com.marcaoas.movielist.domain.models.MovieList;
 import com.marcaoas.movielist.presentation.utils.Logger;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -19,7 +21,9 @@ public class MovieListPresenter implements MovieListContract.Presenter {
     private final ListMoviesInteractor interactor;
     private MovieListContract.View view;
     private CompositeDisposable disposableBag = new CompositeDisposable();
-    private int currentPage = FIRST_PAGE;
+    private int nextPage = FIRST_PAGE;
+    private boolean hasEndedPagination;
+    private boolean isLoading;
 
     public MovieListPresenter(ListMoviesInteractor interactor) {
         this.interactor = interactor;
@@ -29,7 +33,6 @@ public class MovieListPresenter implements MovieListContract.Presenter {
     public void bindView(MovieListContract.View view) {
         this.view = view;
         Logger.d("BIND VIEW");
-
     }
 
     @Override
@@ -43,7 +46,11 @@ public class MovieListPresenter implements MovieListContract.Presenter {
 
     @Override
     public void startingScreen() {
-        loadMovies();
+        isLoading = true;
+        view.showLoading();
+        executeRequest(movieRequest(FIRST_PAGE).subscribe(movieList -> {
+            view.addMovies(movieList.getMovies());
+        }));
     }
 
     @Override
@@ -53,37 +60,55 @@ public class MovieListPresenter implements MovieListContract.Presenter {
 
     @Override
     public void onRefreshMovies() {
-        view.clearMovies();
-        currentPage = FIRST_PAGE;
-        loadMovies();
+        if(!isLoading){
+            isLoading = true;
+            executeRequest(movieRequest(FIRST_PAGE).subscribe(movieList -> {
+                view.clearMovies();
+                view.addMovies(movieList.getMovies());
+            }));
+        }
     }
 
     @Override
     public void onScrollBottom() {
-        currentPage++;
-        loadMovies();
+        if(!hasEndedPagination && nextPage != FIRST_PAGE) {
+            isLoading = true;
+            view.showLoading();
+            executeRequest(movieRequest(nextPage).subscribe( movieList -> {
+                view.addMovies(movieList.getMovies());
+            }));
+        }
     }
 
     @Override
     public void onTryAgainClicked() {
-        loadMovies();
+        if(nextPage == FIRST_PAGE){
+            startingScreen();
+        } else {
+            onScrollBottom();
+        }
     }
 
-    private void loadMovies() {
-        view.showLoading();
-        Disposable disposable = interactor.listAllMovies(currentPage)
+    private Single<MovieList> movieRequest(int page) {
+        return interactor.listAllMovies(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movieList -> {
+                .doOnSuccess((movieList) -> {
+                    nextPage = movieList.getCurrentPage() + 1;
+                    hasEndedPagination = movieList.hasEndedPagination();
                     view.hideLoading();
-                    view.showList();
-                    view.addMovies(movieList.getMovies());
-                    currentPage = movieList.getCurrentPage();
-                }, throwable -> {
-                    Logger.d("ERROR");
+                    isLoading = false;
+                })
+                .doOnError(throwable -> {
                     view.hideLoading();
-                    throwable.printStackTrace();
+                    view.showDefaultError();
+                    isLoading = false;
                 });
+    }
+
+
+    private void executeRequest(Disposable disposable) {
         disposableBag.add(disposable);
     }
+
 }
