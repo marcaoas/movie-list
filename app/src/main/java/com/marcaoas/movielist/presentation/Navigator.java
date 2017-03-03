@@ -2,21 +2,14 @@ package com.marcaoas.movielist.presentation;
 
 import android.content.Context;
 
-import com.marcaoas.movielist.presentation.utils.Logger;
-
+import com.marcaoas.movielist.presentation.details.MovieDetailsActivity;
 /**
  * Created by marco on 01/03/17.
  */
 
 public class Navigator {
-    private final Context context;
 
-    public Navigator(Context context) {
-        this.context = context;
-    }
-
-    public void navigateToMovieDetailsActivity(String movieId) {
-        //TODO
-        Logger.d("navigating to movie screen : "+ movieId);
+    public void navigateToMovieDetailsActivity(Context context, String movieId) {
+        context.startActivity(MovieDetailsActivity.getCallingIntent(context, movieId));
     }
 }

@@ -1,6 +1,7 @@
 package com.marcaoas.movielist.presentation.discover;
 
 import com.marcaoas.movielist.domain.interactors.ListMoviesInteractor;
+import com.marcaoas.movielist.domain.models.Movie;
 import com.marcaoas.movielist.presentation.utils.Logger;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -47,5 +48,10 @@ public class MovieListPresenter implements MovieListContract.Presenter {
                     view.hideLoading();
                     throwable.printStackTrace();
                 });
+    }
+
+    @Override
+    public void movieClicked(Movie movie) {
+        view.goToMovieDetails(movie.getId());
     }
 }

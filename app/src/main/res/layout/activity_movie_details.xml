@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/movie_details_container"
+    android:background="@android:color/darker_gray">
+
+    <ImageView
+        android:id="@+id/backdrop_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:id="@+id/movie_title_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/backdrop_imageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorAccent"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:paddingTop="@dimen/movie_title_padding"
+        android:paddingBottom="@dimen/movie_title_padding"
+        android:paddingLeft="@dimen/movie_details_left_padding"
+        android:paddingStart="@dimen/movie_details_left_padding"
+        android:paddingRight="@dimen/movie_details_right_padding"
+        android:paddingEnd="@dimen/movie_details_right_padding"
+        android:text="MOVIE NAME "/>
+
+    <TextView
+        android:id="@+id/movie_description_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/movie_title_textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+</RelativeLayout>

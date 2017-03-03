@@ -12,10 +12,14 @@ public interface MovieDetailsContract {
         void showInternetError();
         void showDefaultError();
         void setBackdropVisible(boolean visible);
+        void goToMovieBookingScreen();
     }
 
     interface Presenter {
-
+        void bindView();
+        void unbindView();
+        void startScreen();
+        void bookMovieClicked();
     }
 
 }

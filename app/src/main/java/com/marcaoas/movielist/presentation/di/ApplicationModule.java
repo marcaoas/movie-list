@@ -38,7 +38,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     Navigator providesNavigator(Context context) {
-        return new Navigator(context);
+        return new Navigator();
     }
 
     @Provides

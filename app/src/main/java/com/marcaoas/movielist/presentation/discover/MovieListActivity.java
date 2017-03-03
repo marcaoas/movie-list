@@ -46,8 +46,8 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         unbindPresenter();
-        super.onStop();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
     private void setupRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.movies_recyclerView);
         moviesAdapter.getItemClick().subscribe( movie -> {
-            navigator.navigateToMovieDetailsActivity(movie.getId());
+            presenter.movieClicked(movie);
         });
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -104,5 +104,10 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
     @Override
     public void addMovies(List<Movie> movies) {
         moviesAdapter.addMovies(movies);
+    }
+
+    @Override
+    public void goToMovieDetails(String movieId) {
+        navigator.navigateToMovieDetailsActivity(this, movieId);
     }
 }
