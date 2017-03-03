@@ -5,6 +5,8 @@ import com.marcaoas.movielist.domain.models.Movie;
 import com.marcaoas.movielist.presentation.utils.Logger;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -15,6 +17,7 @@ public class MovieListPresenter implements MovieListContract.Presenter {
 
     private final ListMoviesInteractor interactor;
     private MovieListContract.View view;
+    private CompositeDisposable disposableBag = new CompositeDisposable();
 
     public MovieListPresenter(ListMoviesInteractor interactor) {
         this.interactor = interactor;
@@ -29,6 +32,9 @@ public class MovieListPresenter implements MovieListContract.Presenter {
 
     @Override
     public void unbindView() {
+        if(!disposableBag.isDisposed()) {
+            disposableBag.dispose();
+        }
         this.view = null;
         Logger.d("UNBIND VIEW");
     }
@@ -36,7 +42,7 @@ public class MovieListPresenter implements MovieListContract.Presenter {
     @Override
     public void startingScreen() {
         view.showLoading();
-        interactor.listAllMovies(1)
+        Disposable disposable = interactor.listAllMovies(1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movieList -> {
@@ -48,6 +54,7 @@ public class MovieListPresenter implements MovieListContract.Presenter {
                     view.hideLoading();
                     throwable.printStackTrace();
                 });
+        disposableBag.add(disposable);
     }
 
     @Override

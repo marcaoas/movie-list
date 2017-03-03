@@ -8,7 +8,8 @@
     <ImageView
         android:id="@+id/backdrop_imageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/movie_backdrop_height"
+        android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true" />
@@ -31,12 +32,35 @@
         android:paddingEnd="@dimen/movie_details_right_padding"
         android:text="MOVIE NAME "/>
 
+
+    <ImageView
+        android:id="@+id/poster_imageView"
+        android:layout_width="@dimen/list_image_width"
+        android:layout_height="@dimen/list_image_width"
+        android:layout_below="@+id/movie_title_textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="@dimen/movie_poster_margin"
+        android:layout_marginBottom="@dimen/movie_poster_margin"
+        android:layout_marginLeft="@dimen/movie_details_left_padding"
+        android:layout_marginStart="@dimen/movie_details_left_padding"
+        android:layout_marginRight="@dimen/movie_poster_margin"
+        android:layout_marginEnd="@dimen/movie_poster_margin"
+        android:src="@drawable/ic_video_icon" />
+
+
     <TextView
-        android:id="@+id/movie_description_textView"
+        android:id="@+id/movie_overview_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/movie_title_textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_toRightOf="@+id/poster_imageView"
+        android:layout_toEndOf="@+id/poster_imageView"
+        android:layout_marginTop="@dimen/movie_poster_margin"
+        android:layout_marginRight="@dimen/movie_details_right_padding"
+        android:layout_marginEnd="@dimen/movie_details_right_padding"
+        android:textSize="@dimen/movie_overview_text_size"
+        android:text="movie overview"/>
 
 </RelativeLayout>

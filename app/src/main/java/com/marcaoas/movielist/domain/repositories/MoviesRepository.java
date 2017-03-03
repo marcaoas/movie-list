@@ -12,7 +12,7 @@ import io.reactivex.Single;
 public interface MoviesRepository {
 
     Single<MovieList> getMovieList(int page);
-    Single<Movie> getMovieDetails(String movieId);
+    Single<Movie> getMovie(String movieId);
 
 
 }

@@ -28,6 +28,7 @@ public class MovieMapper {
         movie.setId(movieEntity.getId());
         movie.setOriginalTitle(movieEntity.getOriginalTitle());
         movie.setTitle(movieEntity.getTitle());
+        movie.setOverview(movieEntity.getOverview());
         movie.setRelaseDate(movieEntity.getReleaseDate());
         movie.setStatus(movieEntity.getStatus());
         movie.setVoteAverage(movieEntity.getVoteAverage());

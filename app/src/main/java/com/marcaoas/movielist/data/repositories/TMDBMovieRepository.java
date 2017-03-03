@@ -32,7 +32,8 @@ public class TMDBMovieRepository implements MoviesRepository {
     }
 
     @Override
-    public Single<Movie> getMovieDetails(String movieId) {
-        return null;
+    public Single<Movie> getMovie(String movieId) {
+        return api.getMovie(movieId)
+                .map(movieMapper::map);
     }
 }

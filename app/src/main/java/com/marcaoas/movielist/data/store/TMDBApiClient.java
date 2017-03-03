@@ -3,6 +3,7 @@ package com.marcaoas.movielist.data.store;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.marcaoas.movielist.BuildConfig;
+import com.marcaoas.movielist.data.entities.tmdb.TMDBMovieEntity;
 import com.marcaoas.movielist.data.entities.tmdb.TMDBMovieListEntity;
 import com.marcaoas.movielist.data.mappers.Mapper;
 import com.marcaoas.movielist.data.mappers.utils.RequestException;
@@ -22,8 +23,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class TMDBApiClient {
 
+    //normally api credentials and endpoint are placed at build.gradle with their respectively build type
+    //but as we only have one environment it will be here for now
     public static final String API_ENDPOINT = "http://api.themoviedb.org/3/";
     public static final String API_KEY = "9a2867abc5ffe4b5bc020fab46ca4f6a";
+
     public static final String API_DATE_FORMAT = "yyyy-MM-dd";
     public static final String IMAGE_ENDPOINT = "https://image.tmdb.org/t/p/original";
     private static TMDBApiServices apiServices;
@@ -81,6 +85,11 @@ public class TMDBApiClient {
 
     public Single<TMDBMovieListEntity> getMovieList(int page) {
         return getApiServices(apiEnpoint).getMovieList(getApiKey(), page)
+                .compose(verifyResponse());
+    }
+
+    public Single<TMDBMovieEntity> getMovie(String movieId) {
+        return getApiServices(apiEnpoint).getMovie(movieId, getApiKey())
                 .compose(verifyResponse());
     }
 }

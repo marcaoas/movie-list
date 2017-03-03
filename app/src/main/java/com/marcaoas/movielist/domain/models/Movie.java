@@ -15,6 +15,7 @@ public class Movie {
     private String posterUrl;
     private String backdropUrl;
     private String status;
+    private String overview;
     private double voteAverage;
     private int voteCount;
 
@@ -73,6 +74,14 @@ public class Movie {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
     public double getVoteAverage() {
