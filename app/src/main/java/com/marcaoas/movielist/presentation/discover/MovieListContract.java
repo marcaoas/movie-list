@@ -16,7 +16,9 @@ public interface MovieListContract {
         void unbindView();
         void startingScreen();
         void movieClicked(Movie movie);
-
+        void onRefreshMovies();
+        void onScrollBottom();
+        void onTryAgainClicked();
     }
 
     interface View {
@@ -26,6 +28,8 @@ public interface MovieListContract {
         void showInternetError();
         void showDefaultError();
         void showList();
+        void hideList();
+        void clearMovies();
         void addMovies(List<Movie> movies);
         void goToMovieDetails(String movieId);
 

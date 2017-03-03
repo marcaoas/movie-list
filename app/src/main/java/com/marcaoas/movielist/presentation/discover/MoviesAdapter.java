@@ -71,6 +71,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         return onMovieClickSubject;
     }
 
+    public void clearMovies() {
+        movieList.clear();
+        notifyDataSetChanged();
+    }
+
     class MovieViewHolder extends RecyclerView.ViewHolder {
         View container;
         TextView title;

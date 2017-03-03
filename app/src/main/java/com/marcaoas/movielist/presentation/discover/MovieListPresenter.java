@@ -14,10 +14,12 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class MovieListPresenter implements MovieListContract.Presenter {
+    private static final int FIRST_PAGE = 1;
 
     private final ListMoviesInteractor interactor;
     private MovieListContract.View view;
     private CompositeDisposable disposableBag = new CompositeDisposable();
+    private int currentPage = FIRST_PAGE;
 
     public MovieListPresenter(ListMoviesInteractor interactor) {
         this.interactor = interactor;
@@ -41,24 +43,47 @@ public class MovieListPresenter implements MovieListContract.Presenter {
 
     @Override
     public void startingScreen() {
+        loadMovies();
+    }
+
+    @Override
+    public void movieClicked(Movie movie) {
+        view.goToMovieDetails(movie.getId());
+    }
+
+    @Override
+    public void onRefreshMovies() {
+        view.clearMovies();
+        currentPage = FIRST_PAGE;
+        loadMovies();
+    }
+
+    @Override
+    public void onScrollBottom() {
+        currentPage++;
+        loadMovies();
+    }
+
+    @Override
+    public void onTryAgainClicked() {
+        loadMovies();
+    }
+
+    private void loadMovies() {
         view.showLoading();
-        Disposable disposable = interactor.listAllMovies(1)
+        Disposable disposable = interactor.listAllMovies(currentPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movieList -> {
                     view.hideLoading();
                     view.showList();
                     view.addMovies(movieList.getMovies());
+                    currentPage = movieList.getCurrentPage();
                 }, throwable -> {
                     Logger.d("ERROR");
                     view.hideLoading();
                     throwable.printStackTrace();
                 });
         disposableBag.add(disposable);
-    }
-
-    @Override
-    public void movieClicked(Movie movie) {
-        view.goToMovieDetails(movie.getId());
     }
 }

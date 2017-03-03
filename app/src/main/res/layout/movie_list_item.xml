@@ -3,7 +3,6 @@
     android:id="@+id/movie_item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/list_item_padding"
     android:background="@drawable/list_item_background"
     android:clickable="true">
 
@@ -15,8 +14,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="@android:color/darker_gray"
-        android:layout_marginRight="@dimen/list_item_padding"
-        android:layout_marginEnd="@dimen/list_item_padding"
         android:src="@drawable/ic_video_icon" />
 
     <TextView
@@ -26,6 +23,7 @@
         android:layout_toRightOf="@+id/poster_imageView"
         android:layout_toEndOf="@+id/poster_imageView"
         android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/list_item_padding"
         android:textSize="20sp"
         android:text="GREATE MOVIE"/>
 
@@ -33,9 +31,13 @@
         android:id="@+id/popularity_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/poster_imageView"
-        android:layout_toEndOf="@+id/poster_imageView"
         android:layout_below="@+id/title_textView"
+        android:layout_alignLeft="@+id/title_textView"
+        android:layout_alignStart="@+id/title_textView"
+        android:layout_alignRight="@+id/title_textView"
+        android:layout_alignEnd="@+id/title_textView"
+        android:layout_marginTop="@dimen/list_item_padding"
+        android:layout_marginBottom="@dimen/list_item_padding"
         android:text="10/10"/>
 
 </RelativeLayout>

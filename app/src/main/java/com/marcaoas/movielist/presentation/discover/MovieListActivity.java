@@ -2,8 +2,10 @@ package com.marcaoas.movielist.presentation.discover;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.marcaoas.movielist.R;
 import com.marcaoas.movielist.domain.models.Movie;
@@ -17,30 +19,35 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by marco on 28/02/17.
  */
 
 public class MovieListActivity extends BaseActivity implements MovieListContract.View {
 
-    private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
 
     @Inject
     MoviesAdapter moviesAdapter;
     @Inject
     Navigator navigator;
-
     @Inject
     MovieListContract.Presenter presenter;
+
+    @BindView(R.id.movies_recyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.pull_to_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
         getAppComponent().plus(new MovieListModule()).inject(this);
-
-        setupRecyclerView();
+        setupViews();
         bindPresenter();
     }
 
@@ -64,8 +71,15 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
         presenter.unbindView();
     }
 
+    private void setupViews() {
+        ButterKnife.bind(this);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            presenter.onRefreshMovies();
+        });
+        setupRecyclerView();
+    }
+
     private void setupRecyclerView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.movies_recyclerView);
         moviesAdapter.getItemClick().subscribe( movie -> {
             presenter.movieClicked(movie);
         });
@@ -75,10 +89,9 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
         mRecyclerView.addItemDecoration(new SimpleListDivider(this));
     }
 
-
     @Override
     public void hideLoading() {
-        Logger.d("hide Loading");
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -98,7 +111,17 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
 
     @Override
     public void showList() {
-        Logger.d("show movies list");
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideList() {
+        mRecyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void clearMovies() {
+        moviesAdapter.clearMovies();
     }
 
     @Override
