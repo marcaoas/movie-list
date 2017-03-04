@@ -7,6 +7,8 @@ import com.marcaoas.movielist.domain.models.Movie;
 import com.marcaoas.movielist.domain.models.MovieList;
 import com.marcaoas.movielist.domain.repositories.MoviesRepository;
 
+import java.util.Date;
+
 import io.reactivex.Single;
 
 /**
@@ -26,8 +28,8 @@ public class TMDBMovieRepository implements MoviesRepository {
     }
 
     @Override
-    public Single<MovieList> getMovieList(int page) {
-        return api.getMovieList(page)
+    public Single<MovieList> getMovieListWithReleaseDateLTESortedByReleaseDate(int page, Date date) {
+        return api.getMovieListSortedByReleaseDateWithReleaseDateLTE(page, date)
                 .map(movieListMapper::map);
     }
 

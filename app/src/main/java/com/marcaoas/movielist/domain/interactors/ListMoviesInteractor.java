@@ -3,6 +3,8 @@ package com.marcaoas.movielist.domain.interactors;
 import com.marcaoas.movielist.domain.models.MovieList;
 import com.marcaoas.movielist.domain.repositories.MoviesRepository;
 
+import java.util.Date;
+
 import io.reactivex.Single;
 
 /**
@@ -21,7 +23,7 @@ public class ListMoviesInteractor {
         if(page < 1){
             page = 1;
         }
-        return moviesRepository.getMovieList(page);
+        return moviesRepository.getMovieListWithReleaseDateLTESortedByReleaseDate(page, new Date());
     }
 
 }

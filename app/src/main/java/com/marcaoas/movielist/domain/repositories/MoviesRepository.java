@@ -3,6 +3,8 @@ package com.marcaoas.movielist.domain.repositories;
 import com.marcaoas.movielist.domain.models.Movie;
 import com.marcaoas.movielist.domain.models.MovieList;
 
+import java.util.Date;
+
 import io.reactivex.Single;
 
 /**
@@ -11,7 +13,7 @@ import io.reactivex.Single;
 
 public interface MoviesRepository {
 
-    Single<MovieList> getMovieList(int page);
+    Single<MovieList> getMovieListWithReleaseDateLTESortedByReleaseDate(int page, Date date);
     Single<Movie> getMovie(String movieId);
 
 

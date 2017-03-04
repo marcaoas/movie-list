@@ -39,6 +39,10 @@ public class MovieDetailsPresenter implements MovieDetailsContract.Presenter {
 
     @Override
     public void startScreen() {
+        requestMovie();
+    }
+
+    public void requestMovie() {
         view.showLoading();
         Disposable disposable = getMovieInteractor.getMovie()
                 .subscribeOn(Schedulers.io())
@@ -56,6 +60,11 @@ public class MovieDetailsPresenter implements MovieDetailsContract.Presenter {
     @Override
     public void bookMovieClicked() {
         //TODO
+    }
+
+    @Override
+    public void retryLoadMovie(){
+        requestMovie();
     }
 
     public void setMovie(Movie movie) {

@@ -28,6 +28,7 @@ public interface MovieDetailsContract {
         void unbindView();
         void startScreen();
         void bookMovieClicked();
+        void retryLoadMovie();
     }
 
 }

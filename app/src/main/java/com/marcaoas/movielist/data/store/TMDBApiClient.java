@@ -6,7 +6,13 @@ import com.marcaoas.movielist.BuildConfig;
 import com.marcaoas.movielist.data.entities.tmdb.TMDBMovieEntity;
 import com.marcaoas.movielist.data.entities.tmdb.TMDBMovieListEntity;
 import com.marcaoas.movielist.data.mappers.Mapper;
+import com.marcaoas.movielist.data.mappers.MovieListMapper;
 import com.marcaoas.movielist.data.mappers.utils.RequestException;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import io.reactivex.Single;
 import io.reactivex.SingleTransformer;
@@ -30,6 +36,7 @@ public class TMDBApiClient {
 
     public static final String API_DATE_FORMAT = "yyyy-MM-dd";
     public static final String IMAGE_ENDPOINT = "https://image.tmdb.org/t/p/original";
+    public static final String RELEASE_SORTED_PARAM = "release_date.desc";
     private static TMDBApiServices apiServices;
     private final String apiKey;
     private final String apiEnpoint;
@@ -70,6 +77,11 @@ public class TMDBApiClient {
         return GsonConverterFactory.create(gson);
     }
 
+    private static String getFormattedDate(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat(API_DATE_FORMAT, Locale.getDefault());
+        return dateFormat.format(date);
+    }
+
     private <T> SingleTransformer<Response<T>, T> verifyResponse() {
         return mapResponse(t -> t);
     }
@@ -83,13 +95,24 @@ public class TMDBApiClient {
         });
     }
 
-    public Single<TMDBMovieListEntity> getMovieList(int page) {
-        return getApiServices(apiEnpoint).getMovieList(getApiKey(), page)
-                .compose(verifyResponse());
+    private <T> SingleTransformer<T, T> verifyRequestError() {
+        return upstream -> upstream.onErrorResumeNext(throwable -> {
+            if (throwable instanceof RequestException) {
+                return Single.error(throwable);
+            }
+            return Single.error(new RequestException(throwable));
+        });
     }
 
     public Single<TMDBMovieEntity> getMovie(String movieId) {
         return getApiServices(apiEnpoint).getMovie(movieId, getApiKey())
-                .compose(verifyResponse());
+                .compose(verifyResponse())
+                .compose(verifyRequestError());
+    }
+
+    public Single<TMDBMovieListEntity> getMovieListSortedByReleaseDateWithReleaseDateLTE(int page, Date releaseDate) {
+        return getApiServices(apiEnpoint).getMovieList(getApiKey(), page, RELEASE_SORTED_PARAM, getFormattedDate(releaseDate))
+                .compose(verifyResponse())
+                .compose(verifyRequestError());
     }
 }

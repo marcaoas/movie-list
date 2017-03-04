@@ -1,5 +1,6 @@
 package com.marcaoas.movielist.presentation.discover;
 
+import com.marcaoas.movielist.data.mappers.utils.RequestException;
 import com.marcaoas.movielist.domain.interactors.ListMoviesInteractor;
 import com.marcaoas.movielist.domain.models.Movie;
 import com.marcaoas.movielist.domain.models.MovieList;
@@ -106,10 +107,22 @@ public class MovieListPresenter implements MovieListContract.Presenter {
                     isLoading = false;
                 })
                 .doOnError(throwable -> {
-                    view.hideLoading();
-                    view.showDefaultError();
+                    showViewError(throwable);
                     isLoading = false;
                 });
+    }
+
+    public void showViewError(Throwable throwable) {
+        if(throwable instanceof RequestException){
+            RequestException exception = (RequestException) throwable;
+            if(exception.isNetworkError()) {
+                view.showInternetError();
+            } else {
+                view.showDefaultError();
+            }
+        } else {
+            view.showDefaultError();
+        }
     }
 
 
