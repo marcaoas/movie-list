@@ -2,7 +2,12 @@
     <string name="app_name">Movie List</string>
     <string name="book_movie">Book the movie</string>
     <string name="extra_loading_message">Carregando ...</string>
-    <string name="extra_retry_button">T ry  Again</string>
+    <string name="extra_retry_button">Try Again</string>
     <string name="extra_default_error_message">Sorry, an unexpected error occurred.</string>
     <string name="extra_network_error_message">Sorry, please check your internet connection and try again.</string>
+    <string formatted="false" name="movie_popularity">Popularity: %f</string>
+    <string formatted="false" name="vote_count" >Votes: %d</string>
+    <string formatted="false" name="movie_language">Lang: %s</string>
+    <string formatted="false" name="movie_runtime_in_minutes">%dm</string>
+    <string formatted="false" name="movie_runtime_in_hours">%dh</string>
 </resources>

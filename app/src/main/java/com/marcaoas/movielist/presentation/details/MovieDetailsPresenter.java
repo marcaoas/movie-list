@@ -93,8 +93,10 @@ public class MovieDetailsPresenter implements MovieDetailsContract.Presenter {
         } else {
             view.setBackdropVisible(false);
         }
+        view.setMovieGenres(movie.getGenreList());
         view.setMovieTitle(movie.getTitle());
         view.setMovieOverview(movie.getOverview());
         view.setPostImageUrl(movie.getPosterUrl());
+        view.setRuntimeAndLanguage(movie.getRuntimeInHours(), movie.getRuntimeInMinutes(), movie.getOriginalLanguage());
     }
 }

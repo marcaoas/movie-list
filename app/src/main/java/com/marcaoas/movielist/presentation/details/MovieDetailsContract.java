@@ -1,5 +1,7 @@
 package com.marcaoas.movielist.presentation.details;
 
+import com.marcaoas.movielist.domain.models.Genre;
+
 import java.util.List;
 
 /**
@@ -19,8 +21,9 @@ public interface MovieDetailsContract {
         void setBackdropImageUrl(String backdropUrl);
         void setMovieTitle(String title);
         void setMovieOverview(String overview);
-        void setMovieCategories(List<String> categories);
+        void setMovieGenres(List<Genre> genres);
         void setPostImageUrl(String posterUrl);
+        void setRuntimeAndLanguage(int hours, int minutes, String language);
         void finishScreen();
     }
 

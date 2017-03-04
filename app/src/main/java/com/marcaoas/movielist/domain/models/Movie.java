@@ -1,6 +1,7 @@
 package com.marcaoas.movielist.domain.models;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by marco on 28/02/17.
@@ -18,7 +19,18 @@ public class Movie {
     private String overview;
     private double voteAverage;
     private int voteCount;
+    private double popularity;
+    private String originalLanguage;
+    private int runtime;
+    private List<Genre> genreList;
 
+    public int getRuntimeInMinutes() {
+        return runtime % 60;
+    }
+
+    public int getRuntimeInHours() {
+        return (runtime - getRuntimeInMinutes()) / 60;
+    }
 
     public String getId() {
         return id;
@@ -98,5 +110,37 @@ public class Movie {
 
     public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
+    }
+
+    public void setPopularity(double popularity) {
+        this.popularity = popularity;
+    }
+
+    public double getPopularity() {
+        return popularity;
+    }
+
+    public String getOriginalLanguage() {
+        return originalLanguage;
+    }
+
+    public void setOriginalLanguage(String originalLanguage) {
+        this.originalLanguage = originalLanguage;
+    }
+
+    public int getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(int runtime) {
+        this.runtime = runtime;
+    }
+
+    public List<Genre> getGenreList() {
+        return genreList;
+    }
+
+    public void setGenreList(List<Genre> genreList) {
+        this.genreList = genreList;
     }
 }

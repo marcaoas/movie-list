@@ -3,6 +3,7 @@ package com.marcaoas.movielist.presentation.di;
 import android.content.Context;
 
 import com.marcaoas.movielist.BuildConfig;
+import com.marcaoas.movielist.data.mappers.GenreMapper;
 import com.marcaoas.movielist.data.mappers.MovieListMapper;
 import com.marcaoas.movielist.data.mappers.MovieMapper;
 import com.marcaoas.movielist.data.repositories.TMDBMovieRepository;
@@ -79,8 +80,14 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    MovieMapper provideMovieMapper(@Named("imageEndpoint") String imageEndpoint) {
-        return new MovieMapper(imageEndpoint);
+    MovieMapper provideMovieMapper(@Named("imageEndpoint") String imageEndpoint, GenreMapper genreMapper) {
+        return new MovieMapper(imageEndpoint, genreMapper);
+    }
+
+    @Provides
+    @Singleton
+    GenreMapper provideGenreMapper() {
+        return new GenreMapper();
     }
 
     @Provides

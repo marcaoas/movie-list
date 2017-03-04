@@ -13,9 +13,11 @@ import java.util.List;
 public class MovieMapper {
 
     private final String imageEndpointTMDB;
+    private final GenreMapper genreMapper;
 
-    public MovieMapper(String imageEndpointTMDB) {
+    public MovieMapper(String imageEndpointTMDB, GenreMapper genreMapper) {
         this.imageEndpointTMDB = imageEndpointTMDB;
+        this.genreMapper = genreMapper;
     }
 
     public Movie map(TMDBMovieEntity movieEntity) {
@@ -33,6 +35,10 @@ public class MovieMapper {
         movie.setStatus(movieEntity.getStatus());
         movie.setVoteAverage(movieEntity.getVoteAverage());
         movie.setVoteCount(movieEntity.getVoteCount());
+        movie.setPopularity(movieEntity.getPopularity());
+        movie.setOriginalLanguage(movieEntity.getOriginalLanguage());
+        movie.setRuntime(movieEntity.getRuntime());
+        movie.setGenreList(genreMapper.map(movieEntity.getGenreList()));
         return movie;
     }
 

@@ -62,10 +62,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/movie_details_container"
-            tools:context="com.marcaoas.movielist.presentation.details.MovieDetailsActivity">
+            tools:context="com.marcaoas.movielist.presentation.details.MovieDetailsActivity"
+            android:paddingBottom="@dimen/navigation_bar_bottom">
 
             <include layout="@layout/extra_messages_view"
-                android:id="@+id/extra_messages_view" />
+                android:id="@+id/extra_messages_view"
+                tools:visibility="gone"/>
 
 
             <uk.co.deanwild.flowtextview.FlowTextView
@@ -91,13 +93,35 @@
                 android:layout_marginEnd="@dimen/movie_poster_margin"
                 tools:src="@drawable/ic_video_icon" />
 
-            <Button
-                android:id="@+id/book_movie_button"
+            <TextView
+                android:id="@+id/genres_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/poster_imageView"
                 android:layout_toEndOf="@+id/poster_imageView"
+                android:textSize="14sp"
+                tools:text="Action"/>
+
+            <TextView
+                android:id="@+id/runtime_and_lang_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/genres_textView"
+                android:layout_toRightOf="@+id/poster_imageView"
+                android:layout_toEndOf="@+id/poster_imageView"
+                android:layout_marginTop="@dimen/movie_small_margin"
+                android:textSize="12sp"
+                tools:text="Lang: en | 1h 30m"/>
+
+            <Button
+                android:id="@+id/book_movie_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/runtime_and_lang_textView"
+                android:layout_toRightOf="@+id/poster_imageView"
+                android:layout_toEndOf="@+id/poster_imageView"
+                android:layout_marginTop="@dimen/movie_small_margin"
                 android:background="@drawable/primary_button"
                 android:textColor="@android:color/white"
                 android:text="@string/book_movie"/>

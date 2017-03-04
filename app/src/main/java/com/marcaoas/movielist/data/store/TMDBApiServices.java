@@ -18,7 +18,7 @@ import retrofit2.http.Query;
 public interface TMDBApiServices {
 
     @GET("discover/movie")
-    Single<Response<TMDBMovieListEntity>> getMovieList(@Query("api_key") String apiKey, @Query("page") int page, @Query("sort_by") String sortBy, @Query("release_date.lte") String releaseDateLessThan);
+    Single<Response<TMDBMovieListEntity>> getMovieList(@Query("api_key") String apiKey, @Query("page") int page, @Query("sort_by") String sortBy, @Query("primary_release_date.lte") String releaseDateLessThan);
 
     @GET("movie/{movie_id}")
     Single<Response<TMDBMovieEntity>> getMovie(@Path("movie_id") String movieId, @Query("api_key") String apiKey);

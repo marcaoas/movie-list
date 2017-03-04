@@ -15,6 +15,8 @@ import com.marcaoas.movielist.domain.models.Movie;
 import com.marcaoas.movielist.presentation.utils.ExtraViewHolder;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +81,18 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private void bindMovieViewHolder(MovieViewHolder movieViewHolder, Movie movie) {
         movieViewHolder.title.setText(movie.getTitle());
+        movieViewHolder.popularity.setText(movieViewHolder.getContext().getString(R.string.movie_popularity, movie.getPopularity()));
+        if(movie.getVoteCount() > 0){
+            movieViewHolder.votes.setText(movieViewHolder.getContext().getString(R.string.vote_count, movie.getVoteCount()));
+            NumberFormat numberFormat = new DecimalFormat("##.#");
+            movieViewHolder.rating.setText(numberFormat.format(movie.getVoteAverage()));
+            movieViewHolder.votes.setVisibility(View.VISIBLE);
+            movieViewHolder.rating.setVisibility(View.VISIBLE);
+        } else {
+            movieViewHolder.votes.setVisibility(View.GONE);
+            movieViewHolder.rating.setVisibility(View.GONE);
+        }
+
         int imageWidth = (int) movieViewHolder.getContext().getResources().getDimension(R.dimen.list_image_width);
         int imageHeight = (int) movieViewHolder.getContext().getResources().getDimension(R.dimen.list_image_height);
         Picasso.with(movieViewHolder.getContext())
@@ -162,17 +176,22 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.movie_item_container)
         View container;
+        @BindView(R.id.title_textView)
         TextView title;
+        @BindView(R.id.popularity_textView)
         TextView popularity;
+        @BindView(R.id.rating_average_TextView)
+        TextView rating;
+        @BindView(R.id.poster_imageView)
         ImageView poster;
+        @BindView(R.id.votes_count_textView)
+        TextView votes;
 
         public MovieViewHolder(View view) {
             super(view);
-            container = view.findViewById(R.id.movie_item_container);
-            title = (TextView) view.findViewById(R.id.title_textView);
-            popularity = (TextView) view.findViewById(R.id.popularity_textView);
-            poster = (ImageView) view.findViewById(R.id.poster_imageView);
+            ButterKnife.bind(this, view);
         }
 
         public Context getContext() {

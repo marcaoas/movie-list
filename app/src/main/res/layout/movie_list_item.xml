@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/movie_item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -23,9 +25,13 @@
         android:layout_toRightOf="@+id/poster_imageView"
         android:layout_toEndOf="@+id/poster_imageView"
         android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/list_item_padding"
+        android:layout_marginTop="@dimen/list_item_half_padding"
+        android:layout_marginLeft="@dimen/list_item_padding"
+        android:layout_marginStart="@dimen/list_item_padding"
+        android:layout_marginRight="@dimen/list_item_padding"
+        android:layout_marginEnd="@dimen/list_item_padding"
         android:textSize="20sp"
-        android:text="GREATE MOVIE"/>
+        tools:text="GREATE MOVIE"/>
 
     <TextView
         android:id="@+id/popularity_textView"
@@ -37,7 +43,33 @@
         android:layout_alignRight="@+id/title_textView"
         android:layout_alignEnd="@+id/title_textView"
         android:layout_marginTop="@dimen/list_item_padding"
-        android:layout_marginBottom="@dimen/list_item_padding"
-        android:text="10/10"/>
+        tools:text="@string/movie_popularity"/>
+
+    <TextView
+        android:id="@+id/votes_count_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/popularity_textView"
+        android:layout_alignStart="@+id/popularity_textView"
+        android:layout_below="@+id/popularity_textView"
+        android:layout_alignEnd="@+id/title_textView"
+        android:layout_alignRight="@+id/title_textView"
+        tools:text="@plurals/vote_count"/>
+
+    <TextView
+        android:id="@+id/rating_average_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="@dimen/rating_star_size"
+        android:layout_alignLeft="@+id/popularity_textView"
+        android:layout_alignStart="@+id/popularity_textView"
+        android:layout_below="@+id/votes_count_textView"
+        android:background="@drawable/ic_star"
+        tools:text="9.5"
+        android:textColor="@color/colorAccent"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:padding="@dimen/rating_star_padding"/>
 
 </RelativeLayout>

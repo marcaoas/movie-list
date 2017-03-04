@@ -3,6 +3,7 @@ package com.marcaoas.movielist.data.entities.tmdb;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by marco on 28/02/17.
@@ -30,6 +31,9 @@ public class TMDBMovieEntity {
     private boolean video;
     @SerializedName("vote_average")
     private double voteAverage;
+    private int runtime;
+    @SerializedName("genres")
+    private List<TMDBGenreEntity> genreList;
 
     public String getId() {
         return id;
@@ -141,5 +145,21 @@ public class TMDBMovieEntity {
 
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
+    }
+
+    public int getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(int runtime) {
+        this.runtime = runtime;
+    }
+
+    public List<TMDBGenreEntity> getGenreList() {
+        return genreList;
+    }
+
+    public void setGenreList(List<TMDBGenreEntity> genreList) {
+        this.genreList = genreList;
     }
 }
