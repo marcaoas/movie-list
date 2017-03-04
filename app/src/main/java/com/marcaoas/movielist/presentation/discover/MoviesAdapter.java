@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.marcaoas.movielist.R;
@@ -15,6 +17,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
@@ -24,11 +28,14 @@ import io.reactivex.subjects.PublishSubject;
 
 public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int FOOTER_VIEW_TYPE = 10;
+    private static final int NONE_EXTRA_VIEW_TYPE = -1;
+    private static final int LOADING_VIEW_TYPE = 10;
+    private static final int DEFAULT_ERROR_VIEW_TYPE = 11;
+    private static final int NETWORK_ERROR_VIEW_TYPE = 12;
     private static final int MOVIE_VIEW_TYPE = 20;
     private ArrayList<Movie> movieList;
     private final PublishSubject<Movie> onMovieClickSubject = PublishSubject.create();
-    private View footerView;
+    private int extraViewType = NONE_EXTRA_VIEW_TYPE;
 
     public MoviesAdapter() {
         movieList = new ArrayList<>();
@@ -40,16 +47,18 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.movie_list_item, parent, false);
             return new MovieViewHolder(view);
-        } else {
-            return null;
+        } else if(viewType != NONE_EXTRA_VIEW_TYPE){
+            View extraView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.loading_view, parent, false);
+            return new ExtraViewHolder(extraView);
         }
-
+        return null;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(position == getItemCount() - 1 && footerView != null){
-            return FOOTER_VIEW_TYPE;
+        if(position == getItemCount() - 1 && extraViewType != NONE_EXTRA_VIEW_TYPE){
+            return extraViewType;
         } else {
             return MOVIE_VIEW_TYPE;
         }
@@ -59,25 +68,44 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if(getItemViewType(position) == MOVIE_VIEW_TYPE){
             Movie movie = getItem(position);
             if(movie != null){
-                MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
-                movieViewHolder.title.setText(movie.getTitle());
-                int imageWidth = (int) movieViewHolder.getContext().getResources().getDimension(R.dimen.list_image_width);
-                int imageHeight = (int) movieViewHolder.getContext().getResources().getDimension(R.dimen.list_image_height);
-                Picasso.with(movieViewHolder.getContext())
-                        .load(movie.getPosterUrl())
-                        .resize(imageWidth, imageHeight)
-                        .centerInside()
-                        .placeholder(R.drawable.ic_video_icon)
-                        .error(R.drawable.ic_video_icon)
-                        .into(movieViewHolder.poster);
-                movieViewHolder.container.setOnClickListener(view -> { onMovieClickSubject.onNext(movie); });
+                bindMovieViewHolder((MovieViewHolder) holder, movie);
             }
+        } else if(getItemViewType(position) != NONE_EXTRA_VIEW_TYPE){
+            bindExtraView((ExtraViewHolder) holder, getItemViewType(position));
+        }
+    }
+
+    private void bindMovieViewHolder(MovieViewHolder movieViewHolder, Movie movie) {
+        movieViewHolder.title.setText(movie.getTitle());
+        int imageWidth = (int) movieViewHolder.getContext().getResources().getDimension(R.dimen.list_image_width);
+        int imageHeight = (int) movieViewHolder.getContext().getResources().getDimension(R.dimen.list_image_height);
+        Picasso.with(movieViewHolder.getContext())
+                .load(movie.getPosterUrl())
+                .resize(imageWidth, imageHeight)
+                .centerInside()
+                .placeholder(R.drawable.ic_video_icon)
+                .error(R.drawable.ic_video_icon)
+                .into(movieViewHolder.poster);
+        movieViewHolder.container.setOnClickListener(view -> { onMovieClickSubject.onNext(movie); });
+    }
+
+    private void bindExtraView(ExtraViewHolder holder, int viewType) {
+        switch (viewType){
+            case DEFAULT_ERROR_VIEW_TYPE:
+                holder.showDefaultError();
+                break;
+            case NETWORK_ERROR_VIEW_TYPE:
+                holder.showNetworkError();
+                break;
+            case LOADING_VIEW_TYPE:
+                holder.showLoading();
+                break;
         }
     }
 
     @Override
     public int getItemCount() {
-        if(footerView!=null){
+        if(extraViewType != NONE_EXTRA_VIEW_TYPE){
             return movieList.size() + 1;
         } else {
             return movieList.size();
@@ -86,7 +114,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public Movie getItem(int position) {
-        if(position >= movieList.size() || position > 0){
+        if(position >= movieList.size() || position < 0){
             return null;
         }
         return movieList.get(position);
@@ -106,13 +134,23 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
-    public void setFooterView(View view) {
-        footerView = view;
+    public void removeExtraView() {
+        extraViewType = NONE_EXTRA_VIEW_TYPE;
         notifyDataSetChanged();
     }
 
-    public void hideFooterView() {
-        footerView = null;
+    public void showDefaultError() {
+        extraViewType = DEFAULT_ERROR_VIEW_TYPE;
+        notifyDataSetChanged();
+    }
+
+    public void showNetworkError() {
+        extraViewType = NETWORK_ERROR_VIEW_TYPE;
+        notifyDataSetChanged();
+    }
+
+    public void showLoading() {
+        extraViewType = LOADING_VIEW_TYPE;
         notifyDataSetChanged();
     }
 
@@ -132,6 +170,52 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public Context getContext() {
             return container.getContext();
+        }
+    }
+
+    class ExtraViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.extra_progressBar)
+        ProgressBar extraProgressBar;
+        @BindView(R.id.extra_retry_button)
+        Button retryButton;
+        @BindView(R.id.extra_message_icon_imageView)
+        ImageView extraIconImageView;
+        @BindView(R.id.extra_message_textView)
+        TextView extraMessageTextView;
+
+
+        public ExtraViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void showDefaultError() {
+            retryButton.setVisibility(View.VISIBLE);
+            extraMessageTextView.setVisibility(View.VISIBLE);
+            extraIconImageView.setVisibility(View.VISIBLE);
+            extraProgressBar.setVisibility(View.GONE);
+            extraMessageTextView.setText(R.string.extra_default_error_message);
+            extraIconImageView.setImageResource(R.drawable.ic_default_error);
+            retryButton.setText(R.string.extra_retry_button);
+        }
+
+        public void showLoading() {
+            retryButton.setVisibility(View.GONE);
+            extraMessageTextView.setVisibility(View.VISIBLE);
+            extraIconImageView.setVisibility(View.GONE);
+            extraProgressBar.setVisibility(View.VISIBLE);
+            extraMessageTextView.setText(R.string.extra_loading_message);
+        }
+
+        public void showNetworkError() {
+            retryButton.setVisibility(View.VISIBLE);
+            extraMessageTextView.setVisibility(View.VISIBLE);
+            extraIconImageView.setVisibility(View.VISIBLE);
+            extraProgressBar.setVisibility(View.GONE);
+            extraMessageTextView.setText(R.string.extra_network_error_message);
+            extraIconImageView.setImageResource(R.drawable.ic_network_error);
+            retryButton.setText(R.string.extra_retry_button);
         }
     }
 }

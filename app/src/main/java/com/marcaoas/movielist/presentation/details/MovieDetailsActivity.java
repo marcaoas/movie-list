@@ -9,6 +9,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.deanwild.flowtextview.FlowTextView;
 
 /**
  * Created by marco on 02/03/17.
@@ -45,11 +47,13 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
     @BindView(R.id.poster_imageView)
     ImageView posterImageView;
     @BindView(R.id.movie_overview_textView)
-    TextView movieOverviewTextView;
+    FlowTextView movieOverviewTextView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.book_movie_button)
+    Button bookMovieButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,8 +61,7 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
         setContentView(R.layout.activity_movie_details);
         handleIntent(savedInstanceState);
         getAppComponent().plus(new MovieDetailsModule(movieId)).inject(this);
-        ButterKnife.bind(this);
-        setupToolbar();
+        setupViews();
         presenter.bindView(this);
         presenter.startScreen();
     }
@@ -86,6 +89,12 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
     protected void onDestroy() {
         super.onDestroy();
         presenter.unbindView();
+    }
+
+    private void setupViews() {
+        ButterKnife.bind(this);
+        setupToolbar();
+        bookMovieButton.setOnClickListener( (view) -> { presenter.bookMovieClicked(); });
     }
 
     private void setupToolbar() {

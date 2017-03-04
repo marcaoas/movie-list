@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/messages_view_top_padding"
+    android:paddingBottom="@dimen/messages_view_bottom_padding"
+    android:paddingLeft="@dimen/messages_view_left_padding"
+    android:paddingStart="@dimen/messages_view_left_padding"
+    android:paddingRight="@dimen/messages_view_right_padding"
+    android:paddingEnd="@dimen/messages_view_right_padding"
+    android:gravity="center_horizontal">
+
+
+    <ProgressBar
+        android:id="@+id/extra_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_spacing"/>
+
+    <ImageView
+        android:id="@+id/extra_message_icon_imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:src="@drawable/ic_default_error"
+        android:layout_marginBottom="@dimen/small_spacing"/>
+
+    <TextView
+        android:id="@+id/extra_message_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/extra_loading_message"
+        android:layout_marginBottom="@dimen/large_spacing"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/extra_retry_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/extra_retry_button"
+        android:gravity="center"/>
+</LinearLayout>

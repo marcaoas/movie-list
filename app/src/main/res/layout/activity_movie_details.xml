@@ -64,6 +64,17 @@
             android:id="@+id/movie_details_container"
             tools:context="com.marcaoas.movielist.presentation.details.MovieDetailsActivity">
 
+            <uk.co.deanwild.flowtextview.FlowTextView
+                android:id="@+id/movie_overview_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/movie_poster_margin"
+                android:layout_marginRight="@dimen/movie_details_right_padding"
+                android:layout_marginEnd="@dimen/movie_details_right_padding"
+                android:layout_marginLeft="@dimen/movie_details_left_padding"
+                android:layout_marginStart="@dimen/movie_details_left_padding"
+                android:layout_marginBottom="@dimen/movie_poster_margin">
+
             <ImageView
                 android:id="@+id/poster_imageView"
                 android:layout_width="@dimen/details_image_width"
@@ -72,27 +83,22 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:background="@android:color/darker_gray"
-                android:layout_marginTop="@dimen/movie_poster_margin"
-                android:layout_marginBottom="@dimen/movie_poster_margin"
-                android:layout_marginLeft="@dimen/movie_details_left_padding"
-                android:layout_marginStart="@dimen/movie_details_left_padding"
                 android:layout_marginRight="@dimen/movie_poster_margin"
                 android:layout_marginEnd="@dimen/movie_poster_margin"
                 tools:src="@drawable/ic_video_icon" />
 
-
-            <TextView
-                android:id="@+id/movie_overview_textView"
+            <Button
+                android:id="@+id/book_movie_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/poster_imageView"
                 android:layout_toEndOf="@+id/poster_imageView"
-                android:layout_marginTop="@dimen/movie_poster_margin"
-                android:layout_marginRight="@dimen/movie_details_right_padding"
-                android:layout_marginEnd="@dimen/movie_details_right_padding"
-                android:textSize="@dimen/movie_overview_text_size"
-                tools:text="movie overview"/>
+                android:background="@drawable/primary_button"
+                android:textColor="@android:color/white"
+                android:text="@string/book_movie"/>
+
+            </uk.co.deanwild.flowtextview.FlowTextView>
 
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>

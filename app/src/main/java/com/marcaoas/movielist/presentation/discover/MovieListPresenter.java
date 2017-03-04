@@ -50,6 +50,8 @@ public class MovieListPresenter implements MovieListContract.Presenter {
         view.showLoading();
         executeRequest(movieRequest(FIRST_PAGE).subscribe(movieList -> {
             view.addMovies(movieList.getMovies());
+        }, throwable -> {
+            throwable.printStackTrace();
         }));
     }
 
@@ -65,6 +67,8 @@ public class MovieListPresenter implements MovieListContract.Presenter {
             executeRequest(movieRequest(FIRST_PAGE).subscribe(movieList -> {
                 view.clearMovies();
                 view.addMovies(movieList.getMovies());
+            }, throwable -> {
+                throwable.printStackTrace();
             }));
         }
     }
@@ -76,6 +80,8 @@ public class MovieListPresenter implements MovieListContract.Presenter {
             view.showLoading();
             executeRequest(movieRequest(nextPage).subscribe( movieList -> {
                 view.addMovies(movieList.getMovies());
+            }, throwable -> {
+                throwable.printStackTrace();
             }));
         }
     }

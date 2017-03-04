@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.marcaoas.movielist.R;
 import com.marcaoas.movielist.domain.models.Movie;
@@ -87,22 +88,25 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
     @Override
     public void hideLoading() {
         swipeRefreshLayout.setRefreshing(false);
+        moviesAdapter.removeExtraView();
     }
 
     @Override
     public void showLoading() {
-        
         Logger.d("show Loading");
+        moviesAdapter.showLoading();
     }
 
     @Override
     public void showInternetError() {
         Logger.d("show Internet error");
+        moviesAdapter.showNetworkError();
     }
 
     @Override
     public void showDefaultError() {
         Logger.d("show default error");
+        moviesAdapter.showDefaultError();
     }
 
     @Override
