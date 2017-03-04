@@ -102,7 +102,7 @@ public class MovieListPresenter implements MovieListContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess((movieList) -> {
                     nextPage = movieList.getCurrentPage() + 1;
-                    hasEndedPagination = movieList.hasEndedPagination();
+                    hasEndedPagination = movieList.paginationHasEnded();
                     view.hideLoading();
                     isLoading = false;
                 })

@@ -45,7 +45,7 @@ public class MovieList {
         this.movies = movies;
     }
 
-    public boolean hasEndedPagination() {
+    public boolean paginationHasEnded() {
         return currentPage >= 1 && currentPage == totalPages;
     }
 }
