@@ -75,7 +75,7 @@ public class MovieListPresenter implements MovieListContract.Presenter {
 
     @Override
     public void onScrollBottom() {
-        if(!hasEndedPagination && nextPage != FIRST_PAGE) {
+        if(!hasEndedPagination && nextPage != FIRST_PAGE && !isLoading) {
             isLoading = true;
             view.showLoading();
             executeRequest(movieRequest(nextPage).subscribe( movieList -> {

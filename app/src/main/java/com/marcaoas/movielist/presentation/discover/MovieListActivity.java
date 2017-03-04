@@ -13,6 +13,7 @@ import com.marcaoas.movielist.domain.models.Movie;
 import com.marcaoas.movielist.presentation.Navigator;
 import com.marcaoas.movielist.presentation.base.BaseActivity;
 import com.marcaoas.movielist.presentation.discover.di.MovieListModule;
+import com.marcaoas.movielist.presentation.utils.EndScrollListener;
 import com.marcaoas.movielist.presentation.utils.Logger;
 import com.marcaoas.movielist.presentation.utils.SimpleListDivider;
 
@@ -76,13 +77,20 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
     }
 
     private void setupRecyclerView() {
-        moviesAdapter.getItemClick().subscribe( movie -> {
-            presenter.movieClicked(movie);
-        });
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(moviesAdapter);
         mRecyclerView.addItemDecoration(new SimpleListDivider(this));
+        mRecyclerView.addOnScrollListener(new EndScrollListener() {
+            @Override
+            public void onScrolledToEnd() {
+                presenter.onScrollBottom();
+            }
+        });
+        moviesAdapter.getItemClick().subscribe( movie -> {
+            presenter.movieClicked(movie);
+        });
+        moviesAdapter.getRetryButtonClicked().subscribe(view -> { presenter.onTryAgainClicked(); });
     }
 
     @Override

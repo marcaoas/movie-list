@@ -35,6 +35,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int MOVIE_VIEW_TYPE = 20;
     private ArrayList<Movie> movieList;
     private final PublishSubject<Movie> onMovieClickSubject = PublishSubject.create();
+    private final PublishSubject<View> onRetryClicked = PublishSubject.create();
     private int extraViewType = NONE_EXTRA_VIEW_TYPE;
 
     public MoviesAdapter() {
@@ -49,7 +50,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             return new MovieViewHolder(view);
         } else if(viewType != NONE_EXTRA_VIEW_TYPE){
             View extraView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.loading_view, parent, false);
+                    .inflate(R.layout.extra_messages_view, parent, false);
             return new ExtraViewHolder(extraView);
         }
         return null;
@@ -93,9 +94,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         switch (viewType){
             case DEFAULT_ERROR_VIEW_TYPE:
                 holder.showDefaultError();
+                holder.retryButton.setOnClickListener(onRetryClicked::onNext);
                 break;
             case NETWORK_ERROR_VIEW_TYPE:
                 holder.showNetworkError();
+                holder.retryButton.setOnClickListener(onRetryClicked::onNext);
                 break;
             case LOADING_VIEW_TYPE:
                 holder.showLoading();
@@ -127,6 +130,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public Observable<Movie> getItemClick() {
         return onMovieClickSubject;
+    }
+    public Observable<View> getRetryButtonClicked() {
+        return onRetryClicked;
     }
 
     public void clearMovies() {
