@@ -64,6 +64,10 @@
             android:id="@+id/movie_details_container"
             tools:context="com.marcaoas.movielist.presentation.details.MovieDetailsActivity">
 
+            <include layout="@layout/extra_messages_view"
+                android:id="@+id/extra_messages_view" />
+
+
             <uk.co.deanwild.flowtextview.FlowTextView
                 android:id="@+id/movie_overview_textView"
                 android:layout_width="match_parent"

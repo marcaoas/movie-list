@@ -33,6 +33,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'MOVIE_BOOKING_URL', '\"http://www.cathaycineplexes.com.sg/\"'
+        }
+        debug {
+            buildConfigField 'String', 'MOVIE_BOOKING_URL', '\"http://www.cathaycineplexes.com.sg/\"'
+
         }
     }
     compileOptions {

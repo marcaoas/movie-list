@@ -2,6 +2,7 @@ package com.marcaoas.movielist.presentation.details;
 
 import android.text.TextUtils;
 
+import com.marcaoas.movielist.data.mappers.utils.RequestException;
 import com.marcaoas.movielist.domain.interactors.GetMovieInteractor;
 import com.marcaoas.movielist.domain.models.Movie;
 
@@ -51,15 +52,33 @@ public class MovieDetailsPresenter implements MovieDetailsContract.Presenter {
                     setMovie(movie);
                     view.hideLoading();
                 }, throwable -> {
-                    view.showDefaultError();
-                    view.hideLoading();
+                    throwable.printStackTrace();
+                    showError(throwable);
                 });
         disposableBag.add(disposable);
     }
 
+    private void showError(Throwable throwable) {
+        if(throwable instanceof RequestException){
+            RequestException exception = (RequestException) throwable;
+            if(exception.isNetworkError()) {
+                view.showInternetError();
+            } else {
+                view.showDefaultError();
+            }
+        } else {
+            view.showDefaultError();
+        }
+    }
+
     @Override
     public void bookMovieClicked() {
-        //TODO
+        view.goToMovieBookingScreen();
+    }
+
+    @Override
+    public void onBackPressed() {
+        view.finishScreen();
     }
 
     @Override

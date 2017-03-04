@@ -1,6 +1,8 @@
 package com.marcaoas.movielist.presentation.di;
 
 import com.marcaoas.movielist.presentation.MovieListApplication;
+import com.marcaoas.movielist.presentation.book.di.BookMovieComponent;
+import com.marcaoas.movielist.presentation.book.di.BookMovieModule;
 import com.marcaoas.movielist.presentation.details.di.MovieDetailsComponent;
 import com.marcaoas.movielist.presentation.details.di.MovieDetailsModule;
 import com.marcaoas.movielist.presentation.discover.di.MovieListComponent;
@@ -21,6 +23,7 @@ public interface ApplicationComponent {
 
     MovieListComponent plus( MovieListModule movieListModule );
     MovieDetailsComponent plus(MovieDetailsModule movieDetailsModule );
+    BookMovieComponent plus(BookMovieModule bookMovieModule);
 
 
 }

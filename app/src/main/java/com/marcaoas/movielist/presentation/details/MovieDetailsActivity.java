@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +21,7 @@ import com.marcaoas.movielist.R;
 import com.marcaoas.movielist.presentation.Navigator;
 import com.marcaoas.movielist.presentation.base.BaseActivity;
 import com.marcaoas.movielist.presentation.details.di.MovieDetailsModule;
+import com.marcaoas.movielist.presentation.utils.ExtraViewHolder;
 import com.marcaoas.movielist.presentation.utils.Logger;
 import com.squareup.picasso.Picasso;
 
@@ -37,6 +41,7 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
     private static final String EXTRA_MOVIE_ID = "com.marcaoas.movielist.movieId";
 
     private String movieId;
+    private ExtraViewHolder extraMessagesViewHolder;
     @Inject
     MovieDetailsContract.Presenter presenter;
     @Inject
@@ -54,6 +59,12 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.book_movie_button)
     Button bookMovieButton;
+    @BindView(R.id.movie_details_container)
+    View movieDetailsContainerView;
+    @BindView(R.id.extra_messages_view)
+    View extraMessagesView;
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout collapsingAppBarView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +81,7 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                presenter.onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -95,6 +106,8 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
         ButterKnife.bind(this);
         setupToolbar();
         bookMovieButton.setOnClickListener( (view) -> { presenter.bookMovieClicked(); });
+        extraMessagesViewHolder = new ExtraViewHolder(extraMessagesView);
+        extraMessagesViewHolder.getRetryButton().setOnClickListener((view) -> { presenter.retryLoadMovie(); });
     }
 
     private void setupToolbar() {
@@ -107,32 +120,40 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
 
     @Override
     public void showLoading() {
-        Logger.d("showing loading");
+        hideContent();
+        extraMessagesView.setVisibility(View.VISIBLE);
+        extraMessagesViewHolder.showLoading();
     }
 
     @Override
     public void hideLoading() {
-        Logger.d("hiding loading");
+        extraMessagesView.setVisibility(View.GONE);
+        showContent();
     }
 
     @Override
     public void showInternetError() {
-        Logger.d("showing internet error");
+        hideContent();
+        extraMessagesView.setVisibility(View.VISIBLE);
+        extraMessagesViewHolder.showNetworkError();
     }
 
     @Override
     public void showDefaultError() {
-        Logger.d("showing default error");
+        hideContent();
+        extraMessagesView.setVisibility(View.VISIBLE);
+        extraMessagesViewHolder.showDefaultError();
     }
 
     @Override
     public void setBackdropVisible(boolean visible) {
         Logger.d("setting backdrop visibility to : " + visible);
+        collapsingAppBarView.setExpanded(visible, true);
     }
 
     @Override
     public void goToMovieBookingScreen() {
-        //TODO
+        navigator.navigateToBookMovie(this);
     }
 
     @Override
@@ -151,7 +172,9 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
 
     @Override
     public void setMovieOverview(String overview) {
-        movieOverviewTextView.setText(overview);
+        if(!TextUtils.isEmpty(overview)){
+            movieOverviewTextView.setText(overview);
+        }
     }
 
     @Override
@@ -170,6 +193,24 @@ public class MovieDetailsActivity extends BaseActivity implements MovieDetailsCo
                 .placeholder(R.drawable.ic_video_icon)
                 .error(R.drawable.ic_video_icon)
                 .into(posterImageView);
+    }
+
+    @Override
+    public void finishScreen() {
+        finish();
+    }
+
+    public void showContent() {
+        movieOverviewTextView.setVisibility(View.VISIBLE);
+        bookMovieButton.setVisibility(View.VISIBLE);
+        posterImageView.setVisibility(View.VISIBLE);
+    }
+
+    public void hideContent() {
+        movieOverviewTextView.setVisibility(View.GONE);
+        bookMovieButton.setVisibility(View.GONE);
+        posterImageView.setVisibility(View.GONE);
+        collapsingAppBarView.setExpanded(false);
     }
 
     public static Intent getCallingIntent(Context context, String movieId) {

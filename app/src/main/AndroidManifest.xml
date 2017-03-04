@@ -23,6 +23,8 @@
 
         <activity android:name=".presentation.details.MovieDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".presentation.book.BookMovieActivity" />
     </application>
 
 </manifest>

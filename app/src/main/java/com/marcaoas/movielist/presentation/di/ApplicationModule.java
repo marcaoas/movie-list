@@ -2,6 +2,7 @@ package com.marcaoas.movielist.presentation.di;
 
 import android.content.Context;
 
+import com.marcaoas.movielist.BuildConfig;
 import com.marcaoas.movielist.data.mappers.MovieListMapper;
 import com.marcaoas.movielist.data.mappers.MovieMapper;
 import com.marcaoas.movielist.data.repositories.TMDBMovieRepository;
@@ -62,6 +63,12 @@ public class ApplicationModule {
         return TMDBApiClient.IMAGE_ENDPOINT;
     }
 
+    @Provides
+    @Singleton
+    @Named("movieBookingUrl")
+    String provideMovieBookingUrl() {
+        return BuildConfig.MOVIE_BOOKING_URL;
+    }
 
     @Provides
     @Singleton

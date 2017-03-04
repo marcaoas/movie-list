@@ -21,6 +21,7 @@ public interface MovieDetailsContract {
         void setMovieOverview(String overview);
         void setMovieCategories(List<String> categories);
         void setPostImageUrl(String posterUrl);
+        void finishScreen();
     }
 
     interface Presenter {
@@ -28,6 +29,7 @@ public interface MovieDetailsContract {
         void unbindView();
         void startScreen();
         void bookMovieClicked();
+        void onBackPressed();
         void retryLoadMovie();
     }
 

@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.marcaoas.movielist.R;
 import com.marcaoas.movielist.domain.models.Movie;
@@ -139,6 +138,6 @@ public class MovieListActivity extends BaseActivity implements MovieListContract
 
     @Override
     public void goToMovieDetails(String movieId) {
-        navigator.navigateToMovieDetailsActivity(this, movieId);
+        navigator.navigateToMovieDetails(this, movieId);
     }
 }

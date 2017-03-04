@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.marcaoas.movielist.R;
 import com.marcaoas.movielist.domain.models.Movie;
+import com.marcaoas.movielist.presentation.utils.ExtraViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -94,11 +95,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         switch (viewType){
             case DEFAULT_ERROR_VIEW_TYPE:
                 holder.showDefaultError();
-                holder.retryButton.setOnClickListener(onRetryClicked::onNext);
+                holder.getRetryButton().setOnClickListener(onRetryClicked::onNext);
                 break;
             case NETWORK_ERROR_VIEW_TYPE:
                 holder.showNetworkError();
-                holder.retryButton.setOnClickListener(onRetryClicked::onNext);
+                holder.getRetryButton().setOnClickListener(onRetryClicked::onNext);
                 break;
             case LOADING_VIEW_TYPE:
                 holder.showLoading();
@@ -176,52 +177,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public Context getContext() {
             return container.getContext();
-        }
-    }
-
-    class ExtraViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.extra_progressBar)
-        ProgressBar extraProgressBar;
-        @BindView(R.id.extra_retry_button)
-        Button retryButton;
-        @BindView(R.id.extra_message_icon_imageView)
-        ImageView extraIconImageView;
-        @BindView(R.id.extra_message_textView)
-        TextView extraMessageTextView;
-
-
-        public ExtraViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-
-        public void showDefaultError() {
-            retryButton.setVisibility(View.VISIBLE);
-            extraMessageTextView.setVisibility(View.VISIBLE);
-            extraIconImageView.setVisibility(View.VISIBLE);
-            extraProgressBar.setVisibility(View.GONE);
-            extraMessageTextView.setText(R.string.extra_default_error_message);
-            extraIconImageView.setImageResource(R.drawable.ic_default_error);
-            retryButton.setText(R.string.extra_retry_button);
-        }
-
-        public void showLoading() {
-            retryButton.setVisibility(View.GONE);
-            extraMessageTextView.setVisibility(View.VISIBLE);
-            extraIconImageView.setVisibility(View.GONE);
-            extraProgressBar.setVisibility(View.VISIBLE);
-            extraMessageTextView.setText(R.string.extra_loading_message);
-        }
-
-        public void showNetworkError() {
-            retryButton.setVisibility(View.VISIBLE);
-            extraMessageTextView.setVisibility(View.VISIBLE);
-            extraIconImageView.setVisibility(View.VISIBLE);
-            extraProgressBar.setVisibility(View.GONE);
-            extraMessageTextView.setText(R.string.extra_network_error_message);
-            extraIconImageView.setImageResource(R.drawable.ic_network_error);
-            retryButton.setText(R.string.extra_retry_button);
         }
     }
 }
